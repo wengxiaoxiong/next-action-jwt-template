@@ -108,7 +108,7 @@ export async function getCurrentUser() {
   const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
 
   if (!token) {
-    return null;
+    redirect("/login");
   }
 
   // 验证令牌
