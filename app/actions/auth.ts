@@ -103,12 +103,15 @@ export async function logout() {
 /**
  * 获取当前用户信息
  */
+/**
+ * 获取当前用户信息，如果未登录则返回null
+ */
 export async function getCurrentUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
 
   if (!token) {
-    redirect("/login");
+    return null;
   }
 
   // 验证令牌
@@ -132,4 +135,17 @@ export async function getCurrentUser() {
     console.error("获取用户信息失败:", error);
     return null;
   }
-} 
+}
+
+/**
+ * 获取当前用户信息，如果未登录则重定向到登录页
+ */
+export async function getCurrentUserWithRedirect() {
+  const user = await getCurrentUser();
+  
+  if (!user) {
+    redirect("/login");
+  }
+
+  return user;
+}
